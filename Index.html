@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40-Day Elite Productivity Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 95vh;
+        }
+
+        /* User Selection Styles */
+        .user-selection {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .user-selection h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .user-selection .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 50px;
+            opacity: 0.9;
+        }
+
+        .user-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .user-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .user-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .user-card .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .user-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .user-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Landing Page Styles */
+        .landing-page {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .landing-page h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .landing-page .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .current-user {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .purpose-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: left;
+        }
+
+        .purpose-section h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .purpose-card {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .purpose-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .purpose-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .start-button, .back-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .back-button {
+            background: linear-gradient(45deg, #636e72, #2d3436);
+            padding: 15px 30px;
+            font-size: 1.2em;
+        }
+
+        .start-button:hover, .back-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Main App Styles */
+        .app-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .user-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .app-header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .current-day {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .day-status {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .day-status.locked {
+            background: linear-gradient(135deg, #636e72, #2d3436);
+        }
+
+        .day-status.completed {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+        }
+
+        .day-status.failed {
+            background: linear-gradient(135deg, #e17055, #d63031);
+        }
+
+        .status-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .today-mission {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .mission-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+
+        .mission-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #636e72;
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .checklist-section {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+        }
+
+        .checklist-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .checklist-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .understand-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .understand-button:hover {
+            transform: scale(1.05);
+        }
+
+        .understand-button:disabled {
+            background: #636e72;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Daily Check-in Modal */
+        .modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+            padding: 30px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            transform: translateY(0);
+        }
+
+        .modal-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .modal h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #2d3436;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .modal-button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .success-button {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+        }
+
+        .fail-button {
+            background: linear-gradient(45deg, #e17055, #d63031);
+            color: white;
+        }
+
+        .modal-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Improvement System */
+        .improvement-section {
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .improvement-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .improvement-approach {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .approach-level {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            background: #ddd;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Motivation Protocol */
+        .motivation-protocol {
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .motivation-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .motivation-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .motivation-step {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .step-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .leaderboard h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 40px;
+        }
+
+        .user-name {
+            flex: 1;
+            margin-left: 15px;
+            font-size: 1.2em;
+        }
+
+        .score {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 5px;
+                border-radius: 15px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .current-day {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .modal-button {
+                max-width: none;
+                width: 100%;
+            }
+
+            .user-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- User Selection Screen -->
+        <div id="userSelection" class="user-selection">
+            <h1>🎯 Elite Productivity Challenge</h1>
+            <p class="subtitle">Choose Your Profile to Begin Your 40-Day Transformation</p>
+            
+            <div class="user-cards">
+                <div class="user-card" onclick="selectUser('toheed')">
+                    <div class="icon">👨‍💻</div>
+                    <h3>Toheed's Journey</h3>
+                    <p>Breaking through personal barriers and building unshakeable discipline</p>
+                </div>
+                
+                <div class="user-card" onclick="selectUser('partner')">
+                    <div class="icon">👩‍🎨</div>
+                    <h3>Manahil's Journey</h3>
+                    <p>Overcoming laziness and stepping into peak productivity</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Landing Page -->
+        <div id="landingPage" class="landing-page hidden">
+            <div class="current-user" id="currentUserDisplay"></div>
+            <h1>🔥 40-Day Elite Productivity Challenge</h1>
+            <p class="subtitle">Transform Your Life Through Discipline & Peak Performance</p>
+            
+            <div class="purpose-section">
+                <h2>🌟 What This System Will Do For You</h2>
+                
+                <div class="purpose-grid">
+                    <div class="purpose-card">
+                        <div class="icon">🧠</div>
+                        <h3>Mental Discipline</h3>
+                        <p>Build unbreakable focus and mental resilience through proven psychological techniques.</p>
+                    </div>
+                    
+                    <div class="purpose-card">
+                        <div class="icon">💪</div>
+                        <h3>Peak Performance</h3>
+                        <p>Develop daily habits that transform you into a high-performing individual.</p>
+                    </div>
+                    
+                    <div class="purpose-card">
+                        <div class="icon">🚀</div>
+                        <h3>Comfort Zone Destruction</h3>
+                        <p>Break through laziness and complacency to achieve extraordinary results.</p>
+                    </div>
+                    
+                    <div class="purpose-card">
+                        <div class="icon">🎯</div>
+                        <h3>Goal Mastery</h3>
+                        <p>Develop the discipline to achieve any goal through systematic habit formation.</p>
+                    </div>
+                    
+                    <div class="purpose-card">
+                        <div class="icon">⚡</div>
+                        <h3>Energy Optimization</h3>
+                        <p>Channel your energy effectively to maximize productivity and life satisfaction.</p>
+                    </div>
+                    
+                    <div class="purpose-card">
+                        <div class="icon">👑</div>
+                        <h3>Elite Mindset</h3>
+                        <p>Develop the mindset of high achievers and successful entrepreneurs.</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <h3>📅 40 Days to Elite Performance</h3>
+                    <p style="font-size: 1.2em; margin-top: 15px;">
+                        This scientifically-designed program guides you through a complete transformation. 
+                        Each day builds progressive challenges that create lasting change and peak performance habits.
+                    </p>
+                </div>
+            </div>
+            
+            <button class="back-button" onclick="goBackToUserSelection()">
+                ← Change User
+            </button>
+            <button class="start-button" onclick="startChallenge()">
+                🔥 START MY TRANSFORMATION 🔥
+            </button>
+        </div>
+
+        <!-- Main Application -->
+        <div id="mainApp" class="hidden">
+            <div class="app-header">
+                <div class="user-indicator" id="headerUserDisplay"></div>
+                <h1>🔥 Elite Productivity Challenge 🔥</h1>
+                <div class="current-day">
+                    <div class="stat-card">
+                        <div class="stat-number" id="currentDay">1</div>
+                        <div>Current Day</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="daysLeft">40</div>
+                        <div>Days Left</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="currentWeek">1</div>
+                        <div>Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="progressPercent">2.5%</div>
+                        <div>Complete</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <!-- Leaderboard -->
+                <div class="leaderboard">
+                    <h3>🏆 Challenge Leaderboard</h3>
+                    <div class="leaderboard-item">
+                        <div class="rank">🥇</div>
+                        <div class="user-name" id="leader1">Toheed</div>
+                        <div class="score" id="score1">Day 1</div>
+                    </div>
+                    <div class="leaderboard-item">
+                        <div class="rank">🥈</div>
+                        <div class="user-name" id="leader2">Partner</div>
+                        <div class="score" id="score2">Day 1</div>
+                    </div>
+                </div>
+
+                <div class="day-status" id="dayStatus">
+                    <div class="status-icon" id="statusIcon">🔒</div>
+                    <h2 id="statusTitle">Day 1 - Ready to Begin</h2>
+                    <p id="statusMessage">Click "I Understand" to unlock today's mission</p>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 2.5%"></div>
+                </div>
+                
+                <div id="lockedContent" class="hidden">
+                    <div class="today-mission" id="todayMission">
+                        <div class="mission-title">🎯 Day 1 Mission: Foundation Building</div>
+                        <div class="mission-content">
+                            <strong>Theme:</strong> Breaking limiting patterns and building elite habits<br>
+                            <strong>Focus:</strong> Establish daily routines that separate you from average performers.
+                        </div>
+                    </div>
+                    
+                    <div class="checklist" id="checklist">
+                        <div class="checklist-section">
+                            <div class="checklist-title">🌅 Morning Excellence</div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="morning1">
+                                <label for="morning1">Wake up before 7 AM</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="morning2">
+                                <label for="morning2">Cold shower (30+ seconds)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="morning3">
+                                <label for="morning3">Write 3 daily priorities</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="morning4">
+                                <label for="morning4">10-minute meditation/mindfulness</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="morning5">
+                                <label for="morning5">Physical exercise (20+ minutes)</label>
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-section">
+                            <div class="checklist-title">🎯 Peak Performance</div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="daily1">
+                                <label for="daily1">3+ hours deep work (no distractions)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="daily2">
+                                <label for="daily2">Learn something new (30+ minutes)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="daily3">
+                                <label for="daily3">Do one thing outside comfort zone</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="daily4">
+                                <label for="daily4">Zero time-wasting activities</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="daily5">
+                                <label for="daily5">Network/connect with someone new</label>
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-section">
+                            <div class="checklist-title">🌙 Evening Mastery</div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="evening1">
+                                <label for="evening1">Healthy, mindful dinner</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="evening2">
+                                <label for="evening2">Read for 30+ minutes</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="evening3">
+                                <label for="evening3">Gratitude journal (3 wins)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="evening4">
+                                <label for="evening4">Plan tomorrow's priorities</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="evening5">
+                                <label for="evening5">Sleep by 10:30 PM</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="motivation-protocol">
+                        <div class="motivation-title">🚨 COMFORT ZONE BREAK PROTOCOL</div>
+                        <div class="motivation-steps">
+                            <div class="motivation-step">
+                                <div class="step-number">1</div>
+                                <div>STOP PROCRASTINATING<br>Take immediate action</div>
+                            </div>
+                            <div class="motivation-step">
+                                <div class="step-number">2</div>
+                                <div>MOVE YOUR BODY<br>20 jumping jacks NOW</div>
+                            </div>
+                            <div class="motivation-step">
+                                <div class="step-number">3</div>
+                                <div>CHALLENGE YOURSELF<br>Do something difficult</div>
+                            </div>
+                            <div class="motivation-step">
+                                <div class="step-number">4</div>
+                                <div>TAKE ACTION<br>Start the hardest task</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Improvement System for Setbacks -->
+                <div id="improvementSystem" class="hidden">
+                    <div class="improvement-section">
+                        <div class="improvement-title">🔄 Enhanced Productivity Protocol</div>
+                        <div id="improvementContent"></div>
+                    </div>
+                </div>
+                
+                <button id="understandButton" class="understand-button" onclick="unlockDay()">
+                    I Understand - Unlock Today's Mission
+                </button>
+
+                <button class="back-button" onclick="goBackToUserSelection()" style="margin-top: 30px;">
+                    ← Switch User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Check-in Modal -->
+    <div id="checkinModal" class="modal">
+        <div class="modal-content">
+            <h3 id="checkinTitle">🌟 Daily Performance Check</h3>
+            <p id="checkinMessage">Did you successfully complete today's challenges and maintain peak performance?</p>
+            
+            <div class="modal-buttons">
+                <button class="modal-button success-button" onclick="markSuccess()">
+                    ✅ YES - Crushed It!
+                </button>
+                <button class="modal-button fail-button" onclick="markSetback()">
+                    📈 Need Improvement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        let appState = {
+            currentUser: null,
+            currentDay: 1,
+            startDate: null,
+            setbacks: 0,
+            isUnlocked: false,
+            lastCheckIn: null,
+            improvementLevel: 0
+        };
+
+        // User data
+        let userData = {
+            toheed: {
+                name: "Toheed",
+                icon: "👨‍💻",
+                currentDay: 1,
+                setbacks: 0,
+                startDate: null,
+                lastCheckIn: null,
+                isUnlocked: false,
+                improvementLevel: 0
+            },
+            partner: {
+                name: "Productivity Champion",
+                icon: "👩‍🎨", 
+                currentDay: 1,
+                setbacks: 0,
+                startDate: null,
+                lastCheckIn: null,
+                isUnlocked: false,
+                improvementLevel: 0
+            }
+        };
+
+        // Day missions and content
+        const dayMissions = {
+            1: {
+                title: "🎯 Day 1 Mission: Foundation Building",
+                content: "Theme: Breaking limiting patterns and building elite habits<br>Focus: Establish daily routines that separate you from average performers."
+            },
+            2: {
+                title: "🧠 Day 2 Mission: Focus Mastery", 
+                content: "Theme: Developing Laser-Sharp Focus<br>Focus: Eliminate distractions and build sustained attention spans."
+            },
+            3: {
+                title: "⚡ Day 3 Mission: Energy Optimization",
+                content: "Theme: Peak Physical and Mental Energy<br>Focus: Optimize your energy levels for maximum productivity."
+            },
+            7: {
+                title: "📈 Day 7 Mission: First Week Victory",
+                content: "Theme: Week 1 Milestone Achievement<br>Focus: Celebrate progress and set higher standards."
+            },
+            14: {
+                title: "🚀 Day 14 Mission: Momentum Acceleration",
+                content: "Theme: Doubling Down on Growth<br>Focus: Push beyond comfort zones and accelerate development."
+            },
+            21: {
+                title: "👑 Day 21 Mission: Elite Mindset",
+                content: "Theme: Thinking Like a High Performer<br>Focus: Develop the mindset of successful entrepreneurs."
+            },
+            30: {
+                title: "💎 Day 30 Mission: Mastery Mode",
+                content: "Theme: Operating at Peak Capacity<br>Focus: Demonstrate elite performance in all areas."
+            },
+            40: {
+                title: "🏆 Day 40 Mission: ELITE STATUS ACHIEVED",
+                content: "Theme: PEAK PERFORMANCE LIFESTYLE<br>Focus: You've transformed into an elite performer!"
+            }
+        };
+
+        // Improvement approaches for setbacks
+        const improvementApproaches = {
+            1: {
+                title: "Level 1: Enhanced Accountability",
+                content: `
+                    <div class="approach-level">First Setback - Optimization Needed</div>
+                    <ul>
+                        <li>Add hourly productivity check-ins</li>
+                        <li>Install focus apps and website blockers</li>
+                        <li>Create a detailed energy and mood tracking journal</li>
+                        <li>Increase accountability with daily partner check-ins</li>
+                        <li>Add 15 minutes morning planning ritual</li>
+                        <li>Implement the "Two-Minute Rule" for tasks</li>
+                    </ul>
+                `
+            },
+            2: {
+                title: "Level 2: Intensive Performance Protocol",
+                content: `
+                    <div class="approach-level">Second Setback - Major Adjustments</div>
+                    <ul>
+                        <li>Schedule every hour with specific outcomes</li>
+                        <li>Join productivity communities and accountability groups</li>
+                        <li>Implement 3x daily energy optimization sessions</li>
+                        <li>Add intensive goal-setting and review sessions</li>
+                        <li>Create environmental changes for peak performance</li>
+                        <li>Consider working with a productivity coach</li>
+                        <li>Weekly performance review and optimization</li>
+                    </ul>
+                `
+            },
+            3: {
+                title: "Level 3: Elite Performance Coaching",
+                content: `
+                    <div class="approach-level">Third Setback - Professional Development</div>
+                    <p>Repeated setbacks indicate need for professional guidance and systematic approach.</p>
+                    <ul>
+                        <li>Professional productivity and performance coaching</li>
+                        <li>Comprehensive life optimization consultation</li>
+                        <li>Join elite performance mastermind groups</li>
+                        <li>Consider ADHD or focus-related health evaluation</li>
+                        <li>Implement comprehensive tracking and analytics</li>
+                        <li>Work with a life coach or business mentor</li>
+                    </ul>
+                `
+            }
+        };
+
+        // User selection
+        function selectUser(userType) {
+            appState.currentUser = userType;
+            loadUserData();
+            document.getElementById('userSelection').classList.add('hidden');
+            document.getElementById('landingPage').classList.remove('hidden');
+            
+            const userDisplay = userType === 'toheed' ? 
+                "👨‍💻 Toheed's Transformation Journey" : 
+                "👩‍🎨 Manahil's Journey";
+            
+            document.getElementById('currentUserDisplay').textContent = userDisplay;
+        }
+
+        // Go back to user selection
+        function goBackToUserSelection() {
+            saveUserData();
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('userSelection').classList.remove('hidden');
+        }
+
+        // Load user-specific data
+        function loadUserData() {
+            if (!appState.currentUser) return;
+            
+            const user = userData[appState.currentUser];
+            appState.currentDay = user.currentDay;
+            appState.setbacks = user.setbacks;
+            appState.startDate = user.startDate;
+            appState.lastCheckIn = user.lastCheckIn;
+            appState.isUnlocked = user.isUnlocked;
+            appState.improvementLevel = user.improvementLevel;
+        }
+
+        // Save user-specific data
+        function saveUserData() {
+            if (!appState.currentUser) return;
+            
+            userData[appState.currentUser] = {
+                name: userData[appState.currentUser].name,
+                icon: userData[appState.currentUser].icon,
+                currentDay: appState.currentDay,
+                setbacks: appState.setbacks,
+                startDate: appState.startDate,
+                lastCheckIn: appState.lastCheckIn,
+                isUnlocked: appState.isUnlocked,
+                improvementLevel: appState.improvementLevel
+            };
+            
+            localStorage.setItem('eliteProductivityUsers', JSON.stringify(userData));
+        }
+
+        // Initialize app
+        function initializeApp() {
+            loadAllUserData();
+        }
+
+        // Load all user data
+        function loadAllUserData() {
+            const saved = localStorage.getItem('eliteProductivityUsers');
+            if (saved) {
+                userData = { ...userData, ...JSON.parse(saved) };
+            }
+        }
+
+        // Start the challenge
+        function startChallenge() {
+            appState.startDate = new Date().toISOString();
+            appState.currentDay = 1;
+            appState.setbacks = 0;
+            appState.isUnlocked = false;
+            saveUserData();
+            
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            updateDisplay();
+            scheduleCheckin();
+        }
+
+        // Unlock daily content
+        function unlockDay() {
+            appState.isUnlocked = true;
+            document.getElementById('lockedContent').classList.remove('hidden');
+            document.getElementById('statusIcon').textContent = '🔥';
+            document.getElementById('statusTitle').textContent = `Day ${appState.currentDay} - Mission Active`;
+            document.getElementById('statusMessage').textContent = 'Complete all tasks and maintain peak performance';
+            document.getElementById('dayStatus').className = 'day-status';
+            document.getElementById('understandButton').style.display = 'none';
+            saveUserData();
+        }
+
+        // Update day based on actual date
+        function updateDayFromDate() {
+            if (!appState.startDate) return;
+            
+            const start = new Date(appState.startDate);
+            const now = new Date();
+            const daysPassed = Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
+            
+            if (daysPassed > appState.currentDay && daysPassed <= 40) {
+                appState.currentDay = daysPassed;
+                appState.isUnlocked = false;
+                saveUserData();
+            }
+            
+            updateDisplay();
+        }
+
+        // Update display
+        function updateDisplay() {
+            document.getElementById('currentDay').textContent = appState.currentDay;
+            document.getElementById('daysLeft').textContent = 40 - appState.currentDay;
+            document.getElementById('currentWeek').textContent = Math.ceil(appState.currentDay / 7);
+            
+            const progress = (appState.currentDay / 40) * 100;
+            document.getElementById('progressPercent').textContent = progress.toFixed(1) + '%';
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Update user display
+            const userName = userData[appState.currentUser].name;
+            document.getElementById('headerUserDisplay').textContent = `${userData[appState.currentUser].icon} ${userName}`;
+            
+            // Update leaderboard
+            updateLeaderboard();
+            
+            // Update mission
+            const mission = dayMissions[appState.currentDay] || {
+                title: `🎯 Day ${appState.currentDay} Mission: Elite Performance`,
+                content: "Theme: Sustained Excellence<br>Focus: Maintain peak performance and continue building elite habits."
+            };
+            
+            document.getElementById('todayMission').innerHTML = 
+                `<div class="mission-title">${mission.title}</div>
+                 <div class="mission-content">${mission.content}</div>`;
+            
+            // Show improvement system if needed
+            if (appState.setbacks > 0 && appState.setbacks <= 3) {
+                document.getElementById('improvementSystem').classList.remove('hidden');
+                document.getElementById('improvementContent').innerHTML = improvementApproaches[appState.setbacks].content;
+            }
+            
+            // Update day status
+            if (!appState.isUnlocked) {
+                document.getElementById('statusIcon').textContent = '🔒';
+                document.getElementById('statusTitle').textContent = `Day ${appState.currentDay} - Ready to Begin`;
+                document.getElementById('statusMessage').textContent = 'Click "I Understand" to unlock today\'s mission';
+                document.getElementById('dayStatus').className = 'day-status locked';
+                document.getElementById('understandButton').style.display = 'block';
+                document.getElementById('lockedContent').classList.add('hidden');
+            }
+        }
+
+        // Update leaderboard
+        function updateLeaderboard() {
+            const users = Object.keys(userData).map(key => ({
+                key,
+                name: userData[key].name,
+                day: userData[key].currentDay
+            })).sort((a, b) => b.day - a.day);
+            
+            document.getElementById('leader1').textContent = users[0].name;
+            document.getElementById('score1').textContent = `Day ${users[0].day}`;
+            document.getElementById('leader2').textContent = users[1].name;
+            document.getElementById('score2').textContent = `Day ${users[1].day}`;
+        }
+
+        // Schedule daily check-in
+        function scheduleCheckin() {
+            const now = new Date();
+            const today = now.toDateString();
+            
+            if (now.getHours() >= 20 && appState.lastCheckIn !== today && appState.isUnlocked) {
+                setTimeout(showCheckin, 2000);
+            }
+        }
+
+        // Show daily check-in modal
+        function showCheckin() {
+            document.getElementById('checkinModal').classList.add('show');
+        }
+
+        // Mark successful day
+        function markSuccess() {
+            const today = new Date().toDateString();
+            appState.lastCheckIn = today;
+            
+            if (appState.currentDay < 40) {
+                appState.currentDay++;
+                appState.isUnlocked = false;
+            }
+            
+            document.getElementById('checkinModal').classList.remove('show');
+            updateDisplay();
+            saveUserData();
+            
+            alert('🎉 Outstanding! You\'ve crushed another day. Your momentum is building!');
+            
+            if (appState.currentDay > 40) {
+                showVictoryMessage();
+            }
+        }
+
+        // Mark setback and restart
+        function markSetback() {
+            appState.setbacks++;
+            appState.currentDay = 1;
+            appState.isUnlocked = false;
+            appState.startDate = new Date().toISOString();
+            appState.improvementLevel = Math.min(appState.setbacks, 3);
+            
+            document.getElementById('checkinModal').classList.remove('show');
+            updateDisplay();
+            saveUserData();
+            
+            if (appState.setbacks === 1) {
+                alert('🔄 Growth opportunity! Let\'s restart with enhanced strategies and stronger commitment.');
+            } else if (appState.setbacks === 2) {
+                alert('⚠️ Time for intensive measures. We\'re implementing advanced performance protocols.');
+            } else if (appState.setbacks >= 3) {
+                alert('📈 Consider professional coaching. Elite performers often work with mentors to break through plateaus.');
+            }
+        }
+
+        // Show victory message
+        function showVictoryMessage() {
+            alert('🏆 INCREDIBLE! You\'ve completed the 40-Day Elite Productivity Challenge! You\'ve developed the habits and mindset of a peak performer!');
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            initializeApp();
+            
+            setInterval(() => {
+                if (appState.currentUser) {
+                    updateDayFromDate();
+                    scheduleCheckin();
+                }
+            }, 60000);
+        };
+
+        // Save checkbox states with user-specific keys
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox' && appState.currentUser) {
+                const checkboxStates = {};
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkboxStates[checkbox.id] = checkbox.checked;
+                });
+                localStorage.setItem(`checkboxes_${appState.currentUser}`, JSON.stringify(checkboxStates));
+            }
+        });
+
+        // Load checkbox states for current user
+        function loadCheckboxStates() {
+            if (!appState.currentUser) return;
+            
+            const saved = localStorage.getItem(`checkboxes_${appState.currentUser}`);
+            if (saved) {
+                const checkboxStates = JSON.parse(saved);
+                Object.keys(checkboxStates).forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = checkboxStates[id];
+                    }
+                });
+            }
+        }
+
+        // Load checkbox states after user selection
+        setTimeout(() => {
+            if (appState.currentUser) {
+                loadCheckboxStates();
+            }
+        }, 500);
+    </script>
+</body>
+</html>
